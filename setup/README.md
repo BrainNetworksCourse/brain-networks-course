@@ -9,10 +9,14 @@
 4. Create a virtual environment for the course:
 
 ```
-python3 -m venv networks
-source activate networks
-pip install -r brain-networks-course/.circleci/requirements.txt
+conda create -n networks anaconda
 
+```
+
+5. Activate the virtual environment (you will need to do this whenever you start a new session):
+
+```
+source activate networks
 ```
 
 
