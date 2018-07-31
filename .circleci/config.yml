@@ -5,6 +5,6 @@ jobs:
       - image: continuumio/anaconda3
     steps:
       - run:
-           name: testing week 2
+           name: testing notebooks
            command: |
-              echo "testing"
+             make all 
