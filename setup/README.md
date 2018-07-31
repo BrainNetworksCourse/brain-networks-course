@@ -9,9 +9,7 @@
 4. Create a virtual environment for the course:
 
 ```
-python3 -m venv networks
-source activate networks
-pip install -r brain-networks-course/.circleci/requirements.txt
+conda env create -f brain-networks-course/environment.yml
 
 ```
 
