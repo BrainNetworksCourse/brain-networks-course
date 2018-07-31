@@ -2,9 +2,16 @@ version: 2
 jobs:
   build:
     docker:
-      - image: continuumio/anaconda3
+      - image: circleci/python:3.6.1
     steps:
+      - run:
+          name: Install Python deps in a virtual environment
+          command: |
+            python3 -m venv myenv
+            . myenv/bin/activate
+            pip install -f requirements.txt
+
       - run:
            name: testing notebooks
            command: |
-             ls 
+             make all
