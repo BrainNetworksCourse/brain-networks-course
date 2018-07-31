@@ -13,5 +13,11 @@ conda create -n networks anaconda
 
 ```
 
+5. Activate the virtual environment (you will need to do this whenever you start a new session):
+
+```
+source activate networks
+```
+
 
 
