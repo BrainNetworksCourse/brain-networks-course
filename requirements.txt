@@ -1,6 +1,4 @@
 alabaster==0.7.10
-anaconda-client==1.6.14
-anaconda-project==0.8.2
 appnope==0.1.0
 appscript==1.0.1
 asn1crypto==0.24.0
