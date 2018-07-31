@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: continuumio/anaconda3
+    steps:
+      - run:
+           name: testing week 2
+           command: |
+              echo "testing"
