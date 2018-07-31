@@ -7,4 +7,4 @@ jobs:
       - run:
            name: testing notebooks
            command: |
-             make all 
+             ls 
