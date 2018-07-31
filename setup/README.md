@@ -9,7 +9,7 @@
 4. Create a virtual environment for the course:
 
 ```
-conda env create -f brain-networks-course/environment.yml
+conda create -n networks anaconda
 
 ```
 
