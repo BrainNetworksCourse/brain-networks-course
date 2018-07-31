@@ -9,7 +9,7 @@ jobs:
           command: |
             python3 -m venv myenv
             . myenv/bin/activate
-            pip install -f requirements.txt
+            pip install requirements.txt
 
       - run:
            name: testing notebooks
