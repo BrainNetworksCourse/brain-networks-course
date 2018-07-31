@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: circleci/python:3.6.1
     steps:
+      - checkout
       - run:
           name: Install Python deps in a virtual environment
           command: |
