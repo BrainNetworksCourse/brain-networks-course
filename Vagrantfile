@@ -2,6 +2,10 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
+# load github username from file
+require_relative 'vagrant_setup.rb'
+include MyVars
+
 $script = <<SCRIPT
 
 if [ ! -d $HOME/miniconda3 ]
@@ -74,7 +78,8 @@ $HOME/miniconda3/bin/pip install python-igraph
 $HOME/miniconda3/bin/pip install nibabel nilearn
 $HOME/miniconda3/bin/pip install nipy
 $HOME/miniconda3/bin/pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
-# $HOME/miniconda3/bin/pip install --process-dependency-links git+https://github.com/pymc-devs/pymc3
+$HOME/miniconda3/bin/conda install --yes -c conda-forge dipy
+$HOME/miniconda3/bin/conda install --yes vtk
 
 if [ ! -d $HOME/mcr ]
 then
@@ -136,7 +141,7 @@ fi
 # get this repo
 if [ ! -d $HOME/brain-networks-course ]
 then
-	git clone https://github.com/poldrack/brain-networks-course
+	git clone https://github.com/GITHUB_USERNAME/brain-networks-course
 fi
 
 # add wxpython dependencies for FSLeyes
