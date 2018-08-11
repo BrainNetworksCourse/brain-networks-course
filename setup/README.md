@@ -66,3 +66,5 @@ git pull upstream master
 ```
 
 You may need to commit any changes you have made to other files in your repo, or use ```git checkout <filename>``` to pull a clean version if you don't need to keep the changes.
+
+Once you have done this it should pull down the new Vagrantfile, and you can then run ```vagrant provision``` in the main repo directory which will rerun the provisioning and install any new software.  
