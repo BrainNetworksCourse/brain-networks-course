@@ -68,3 +68,8 @@ git pull upstream master
 You may need to commit any changes you have made to other files in your repo, or use ```git checkout <filename>``` to pull a clean version if you don't need to keep the changes.
 
 Once you have done this it should pull down the new Vagrantfile, and you can then run ```vagrant provision``` in the main repo directory which will rerun the provisioning and install any new software.  
+
+### Some tips for using the VM
+
+- I find the default screensaver to use up a lot of processing power, so I generally change it to a blank screen (under Preferences->Screensaver).
+- You can add an ssh key for your VM so that you won't have to enter your github credentials each time you push or pull.  See [here](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) for info on how to do this.  
