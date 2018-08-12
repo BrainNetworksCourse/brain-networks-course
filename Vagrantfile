@@ -141,7 +141,7 @@ fi
 # get this repo
 if [ ! -d $HOME/brain-networks-course ]
 then
-	git clone https://github.com/GITHUB_USERNAME/brain-networks-course
+	git clone https://github.com/#{GITHUB_USERNAME}/brain-networks-course
 fi
 
 # add wxpython dependencies for FSLeyes
