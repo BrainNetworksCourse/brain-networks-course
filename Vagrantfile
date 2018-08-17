@@ -64,8 +64,6 @@ ipython \
 jupyter
 
 $HOME/miniconda3/bin/pip install Cython
-$HOME/miniconda3/bin/pip install infomap
-
 $HOME/miniconda3/bin/conda install --yes matplotlib \
 statsmodels \
 boto \
@@ -82,6 +80,9 @@ $HOME/miniconda3/bin/pip install nipy
 $HOME/miniconda3/bin/pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
 $HOME/miniconda3/bin/conda install --yes -c conda-forge dipy
 $HOME/miniconda3/bin/conda install --yes vtk
+
+$HOME/miniconda3/bin/pip install infomap
+$HOME/miniconda3/bin/pip install python-louvain
 
 if [ ! -d $HOME/mcr ]
 then
