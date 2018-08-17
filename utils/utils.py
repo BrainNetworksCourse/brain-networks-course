@@ -3,6 +3,8 @@ utils for brain networks course
 """
 
 from Bio import Entrez
+import igraph
+import networkx as nx
 
 # get number of joint pubs for each pair
 def get_joint_pubs(author_pair, email,retmax=200000,):
@@ -21,3 +23,13 @@ def get_joint_pubs(author_pair, email,retmax=200000,):
     return(len(pmids))
 
 
+# convert nx graph to igraph, using graphml as intermediary
+
+def nx_to_igraph(G):
+    temp_dir = tempfile.mkdtemp()
+    tmpfile=os.path.join(temp_dir,'graph.graphml')
+    nx.write_graphml(G,tmpfile)
+    ig = igraph.read(tmpfile,format="graphml")
+    os.remove(tmpfile)
+    os.rmdir(temp_dir)
+    return(ig)
