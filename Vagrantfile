@@ -64,6 +64,7 @@ ipython \
 jupyter
 
 $HOME/miniconda3/bin/pip install Cython
+$HOME/miniconda3/bin/pip install infomap
 
 $HOME/miniconda3/bin/conda install --yes matplotlib \
 statsmodels \
@@ -74,6 +75,7 @@ seaborn \
 spyder \
 sympy
 
+$HOME/miniconda3/bin/pip install biopython
 $HOME/miniconda3/bin/pip install python-igraph
 $HOME/miniconda3/bin/pip install nibabel nilearn
 $HOME/miniconda3/bin/pip install nipy
