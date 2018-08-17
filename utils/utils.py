@@ -5,6 +5,7 @@ utils for brain networks course
 from Bio import Entrez
 import igraph
 import networkx as nx
+import tempfile
 
 # get number of joint pubs for each pair
 def get_joint_pubs(author_pair, email,retmax=200000,):
