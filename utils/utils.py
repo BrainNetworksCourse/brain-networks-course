@@ -5,7 +5,9 @@ utils for brain networks course
 from Bio import Entrez
 import igraph
 import networkx as nx
-import tempfile
+import tempfile,os
+import numpy
+import sklearn
 
 # get number of joint pubs for each pair
 def get_joint_pubs(author_pair, email,retmax=200000,):
@@ -34,3 +36,34 @@ def nx_to_igraph(G):
     os.remove(tmpfile)
     os.rmdir(temp_dir)
     return(ig)
+
+
+def module_degree_zscore(G,partition,zscore=True):
+    """
+    given an adjacency matrix and partition,
+    return module-degree z score for each node
+    set zscore to false to get unnormalized version
+    """
+    partition=numpy.array(partition)
+    unique_levels=numpy.unique(partition)
+    adjmtx=nx.to_numpy_array(G)
+    degree=numpy.sum(adjmtx,0)
+    mdzs=numpy.zeros(len(degree))
+    for l in unique_levels:
+        a=adjmtx[partition==l,:]
+        d=sum(a)
+        if zscore:
+            mdzs[partition==l]=sklearn.preprocessing.scale(d[partition==l])
+        else:
+            mdzs[partition==l]=d[partition==l]
+    return(mdzs)
+
+def participation_coefficient(G,partition):
+
+    partition=pub_comms.membership
+    mod_degree=module_degree_zscore(G,partition,zscore=False)
+    adjmtx=nx.to_numpy_array(G)
+    degree=numpy.sum(adjmtx,0)
+
+    pc=1 - (mod_degree/degree)**2
+    return(pc)
