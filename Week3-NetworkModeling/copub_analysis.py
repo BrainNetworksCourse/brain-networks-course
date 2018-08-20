@@ -17,8 +17,15 @@ from utils import get_joint_pubs
 Entrez.email='joe@schmo.edu' # enter your email address here
 retmax=200000
 
-base_authors=['bassett-d','sporns-o','breakspear-m','milham-m']
-
+journals_to_use=['Cereb. Cortex','Nat Hum Behav',
+ 'Gigascience',
+ 'Cortex',
+ 'BMC Neurosci','J. Neurophysiol.',
+ 'Brain Lang','Elife','Schizophr. Res.','Neuron',
+ 'J Cogn Neurosci','J. Neurosci.','Neuroimage','Proc. Natl. Acad. Sci. U.S.A.',
+ 'Hum Brain Mapp','Biol. Psychiatry','Nat. Med.',
+ 'Netw Neurosci','Brain Cogn','Brain Res.',
+ 'Schizophr Bull','BMC Psychiatry','Am J Psychiatry']
 # find all coauthors from list of base authors
 
 def get_pmids_from_list(st):
@@ -41,20 +48,38 @@ def get_pubmed_records(pmids):
     return(records)
 
 # get full author listing
-def get_authors_from_pmids(records):
+def get_authors_from_pmids(records,journal_filter=None):
     authors=[]
+    orcid_dict={}
+    journals=[]
     for i in records['PubmedArticle']:
         a=[]
-        try:
-            if 'AuthorList' in i['MedlineCitation']['Article']:
-                for au in i['MedlineCitation']['Article']['AuthorList']:
+        j=i['MedlineCitation']['Article']['Journal']['ISOAbbreviation']
+        pmid=int(i['MedlineCitation']['PMID'])
+        if journal_filter:
+            if not j in journal_filter:
+                continue
+        if 'AuthorList' in i['MedlineCitation']['Article']:
+            if not 'eng' in i['MedlineCitation']['Article']['Language']:
+                continue
+            journals.append(j)
+            for au in i['MedlineCitation']['Article']['AuthorList']:
+                try:
                     ln=au['LastName'].replace(' ','')
                     initials=au['Initials']
-                    a.append(ln+'-'+initials)
+                    if len(initials)>0:
+                        a.append(ln+'-'+initials)
+                except KeyError:
+                    pass
+                if 'Identifier' in au:
+                    if len(au['Identifier'])>0:
+                        try:
+                            orcid_dict[ln+'-'+initials]=au['Identifier'][0]
+                        except KeyError:
+                            pass
+        if len(a)>0:
             authors.append(a)
-        except KeyError:
-            pass
-    return(authors)
+    return(authors,orcid_dict,journals)
 
 
 
@@ -78,6 +103,7 @@ def get_copub_data(authors):
 
 pmids=get_pmids_from_list('"resting state" AND "fMRI" AND "connectivity"')
 records=get_pubmed_records(pmids)
-authors=get_authors_from_pmids(records)
+authors,orcid_dict,journals=get_authors_from_pmids(records,journals_to_use)
+
 copub,all_author_names=get_copub_data(authors)
-pickle.dump((copub,all_author_names),open('../data/pubmed/copub_data.pkl','wb'))
+pickle.dump((copub,all_author_names,orcid_dict),open('../data/pubmed/copub_data.pkl','wb'))
