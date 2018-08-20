@@ -5,7 +5,7 @@ utils for brain networks course
 from Bio import Entrez
 import igraph
 import networkx as nx
-import tempfile,os
+import tempfile,os,itertools,pickle
 import numpy
 import sklearn
 
@@ -59,11 +59,38 @@ def module_degree_zscore(G,partition,zscore=True):
     return(mdzs)
 
 def participation_coefficient(G,partition):
-
-    partition=pub_comms.membership
     mod_degree=module_degree_zscore(G,partition,zscore=False)
     adjmtx=nx.to_numpy_array(G)
     degree=numpy.sum(adjmtx,0)
 
     pc=1 - (mod_degree/degree)**2
     return(pc)
+
+def get_pubdata(researchers,datafile='../data/pubmed/pubdata.pkl',email='bill@gmail.com'):
+    """
+    get pubmed data for a set of researchers
+    """
+
+    if os.path.exists(datafile):
+        numpubs=pickle.load(open(datafile,'rb'))
+    else:
+        numpubs={}
+
+
+    # first get pubmed search terms from names
+    for i in researchers:
+        n_s=researchers[i]['name'].lower().split(' ')
+        researchers[i]['pubmed_name']=n_s[1]+'-'+n_s[0][0]
+
+
+    for i in itertools.combinations(list(researchers.keys()),2):
+        if not i in numpubs:
+            # use cached data if present
+            numpubs[i]=get_joint_pubs((researchers[i[0]]['pubmed_name'],
+                                       researchers[i[1]]['pubmed_name']),
+                                       email)
+
+
+    # save pub data
+    pickle.dump(numpubs,open(datafile,'wb'))
+    return(numpubs)
