@@ -18,14 +18,12 @@ Entrez.email='joe@schmo.edu' # enter your email address here
 retmax=200000
 
 journals_to_use=['Cereb. Cortex','Nat Hum Behav',
- 'Gigascience',
- 'Cortex',
+ 'Gigascience', 'Cortex','Nat Neurosci',
  'BMC Neurosci','J. Neurophysiol.',
- 'Brain Lang','Elife','Schizophr. Res.','Neuron',
+ 'Elife','Neuron',
  'J Cogn Neurosci','J. Neurosci.','Neuroimage','Proc. Natl. Acad. Sci. U.S.A.',
  'Hum Brain Mapp','Biol. Psychiatry','Nat. Med.',
- 'Netw Neurosci','Brain Cogn','Brain Res.',
- 'Schizophr Bull','BMC Psychiatry','Am J Psychiatry']
+ 'Netw Neurosci']
 # find all coauthors from list of base authors
 
 def get_pmids_from_list(st):
