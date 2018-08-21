@@ -6,7 +6,11 @@ import pandas,numpy
 import networkx as nx
 
 
-def get_tract_graph(FLNe_threshold=10e-4):
+def get_tract_graph(FLNe_threshold=10e-4,limit_to_target=False):
+  """
+    Load data from Markov et al. 2012 study
+    limit_to_target: only include target regions
+  """
   tracing_data = pandas.read_excel('core-nets/Cercor_2012 Table.xls')
 
   tract_dict={}
@@ -24,15 +28,13 @@ def get_tract_graph(FLNe_threshold=10e-4):
   source_regions=list(set(source_regions))
   target_regions=list(set(target_regions))
 
-  # confirm that we have the correct numbers of regions
-  assert len(source_regions)==91
-  assert len(target_regions)==29
-
-  # make sure that all of the target regions are present in the source regions list
-  assert len(set(source_regions).intersection(set(target_regions))) == len(target_regions)
-
-  adjacency_mtx = pandas.DataFrame(numpy.zeros((len(source_regions),len(source_regions))),
+  if limit_to_target:
+      adjacency_mtx = pandas.DataFrame(numpy.zeros((len(target_regions),len(target_regions))),
+                                index=target_regions,columns=target_regions)
+  else:
+      adjacency_mtx = pandas.DataFrame(numpy.zeros((len(source_regions),len(source_regions))),
                                 index=source_regions,columns=source_regions)
+
   for r in adjacency_mtx.index:
       for c in adjacency_mtx.columns:
           if (r,c) in tract_dict:
