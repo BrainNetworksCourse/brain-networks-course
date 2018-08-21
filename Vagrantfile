@@ -83,6 +83,8 @@ $HOME/miniconda3/bin/conda install --yes vtk
 
 $HOME/miniconda3/bin/pip install infomap
 $HOME/miniconda3/bin/pip install python-louvain
+$HOME/miniconda3/bin/pip install SimpleITK
+
 
 if [ ! -d $HOME/mcr ]
 then
