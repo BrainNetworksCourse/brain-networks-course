@@ -61,7 +61,8 @@ traits \
 networkx \
 dateutil \
 ipython \
-jupyter
+jupyter \
+jupyterlab
 
 $HOME/miniconda3/bin/pip install Cython
 $HOME/miniconda3/bin/conda install --yes matplotlib \
