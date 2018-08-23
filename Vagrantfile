@@ -16,8 +16,13 @@ wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O mi
  chmod +x miniconda.sh
  ./miniconda.sh -b
  echo "export PATH=$HOME/miniconda3/bin:\\$PATH" >> .bashrc
+ echo "source activate $HOME/miniconda3/envs/py3" >> .bashrc
  echo "export PATH=$HOME/miniconda3/bin:\\$PATH" >> .env
+ $HOME/miniconda3/bin/conda create -n py3 python=3.6
 fi
+
+source $HOME/miniconda3/bin/activate $HOME/miniconda3/envs/py3
+
 wget -O- http://neuro.debian.net/lists/trusty.us-nh.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
 sudo apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
 
@@ -52,39 +57,34 @@ sudo apt-get install -y --force-yes  python3-dev libxml2-dev libxslt1-dev zlib1g
 
 
 # install nipype dependencies
-$HOME/miniconda3/bin/conda update --yes conda
-$HOME/miniconda3/bin/conda install --yes pip \
+conda update --yes -n base conda
+conda install --yes python=3.6
+
+conda install --yes pip \
 numpy \
 scipy \
-nose \
-traits \
-networkx \
-dateutil \
-ipython \
-jupyter \
-jupyterlab
+networkx
 
-$HOME/miniconda3/bin/pip install Cython
-$HOME/miniconda3/bin/conda install --yes matplotlib \
+conda install --yes -c conda-forge jupyter jupyterlab
+
+pip install Cython
+conda install --yes matplotlib \
 statsmodels \
-boto \
 pandas \
 scikit-learn \
-seaborn \
-spyder \
-sympy
+seaborn
 
-$HOME/miniconda3/bin/pip install biopython
-$HOME/miniconda3/bin/pip install python-igraph
-$HOME/miniconda3/bin/pip install nibabel nilearn
-$HOME/miniconda3/bin/pip install nipy
-$HOME/miniconda3/bin/pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
-$HOME/miniconda3/bin/conda install --yes -c conda-forge dipy
-$HOME/miniconda3/bin/conda install --yes vtk
+pip install biopython
+pip install python-igraph
+pip install nibabel nilearn
+pip install nipy
+pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
+conda install --yes -c conda-forge dipy
+conda install --yes vtk
 
-$HOME/miniconda3/bin/pip install infomap
-$HOME/miniconda3/bin/pip install python-louvain
-$HOME/miniconda3/bin/pip install SimpleITK
+
+pip install python-louvain
+pip install SimpleITK
 
 
 if [ ! -d $HOME/mcr ]
@@ -157,8 +157,8 @@ sudo apt-get install -y --force-yes libgtk2.0-dev libgtk-3-dev libwebkitgtk-dev 
 sudo apt-get install -y --force-yes libjpeg-turbo8-dev libtiff5-dev libsdl1.2-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev
 
 # install FSLeyes
-$HOME/miniconda3/bin/pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-16.04 wxpython
-$HOME/miniconda3/bin/pip install fsleyes
+pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-16.04 wxpython
+pip install fsleyes
 
 # clean up
 
@@ -168,6 +168,7 @@ sudo apt-get autoremove -y
 
 sudo VBoxClient --display -d
 sudo VBoxClient --clipboard -d
+
 
 SCRIPT
 
