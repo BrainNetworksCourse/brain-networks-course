@@ -160,6 +160,11 @@ sudo apt-get install -y --force-yes libjpeg-turbo8-dev libtiff5-dev libsdl1.2-de
 pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-16.04 wxpython
 pip install fsleyes
 
+# install Atom
+sudo add-apt-repository -y ppa:webupd8team/atom
+sudo apt-get update
+sudo apt-get install -y atom
+
 # clean up
 
 sudo apt-get clean -y
