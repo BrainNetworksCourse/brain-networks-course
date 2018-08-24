@@ -70,6 +70,8 @@ numpy \
 scipy \
 networkx
 
+conda install --yes -c conda-forge scikit-image
+
 conda install --yes -c conda-forge jupyter jupyterlab
 
 pip install Cython
