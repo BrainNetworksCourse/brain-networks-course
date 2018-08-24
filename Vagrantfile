@@ -31,6 +31,9 @@ sudo cp /tmp/cran.sources.list /etc/apt/sources.list.d/
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 
 sudo rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+sudo add-apt-repository -y ppa:webupd8team/atom # install Atom
+
 sudo apt-get update -y
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade -y
 
@@ -54,6 +57,8 @@ eog \
 geany
 
 sudo apt-get install -y --force-yes  python3-dev libxml2-dev libxslt1-dev zlib1g-dev
+
+sudo apt-get install -y atom
 
 
 # install nipype dependencies
@@ -160,10 +165,6 @@ sudo apt-get install -y --force-yes libjpeg-turbo8-dev libtiff5-dev libsdl1.2-de
 pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-16.04 wxpython
 pip install fsleyes
 
-# install Atom
-sudo add-apt-repository -y ppa:webupd8team/atom
-sudo apt-get update
-sudo apt-get install -y atom
 
 # clean up
 
