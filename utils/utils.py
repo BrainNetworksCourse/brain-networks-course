@@ -7,7 +7,7 @@ import igraph
 import networkx as nx
 import tempfile,os,itertools,pickle
 import numpy
-import sklearn
+import sklearn.preprocessing
 
 # get number of joint pubs for each pair
 def get_joint_pubs(author_pair, email,retmax=200000,):
