@@ -94,3 +94,35 @@ def get_pubdata(researchers,datafile='../data/pubmed/pubdata.pkl',email='bill@gm
     # save pub data
     pickle.dump(numpubs,open(datafile,'wb'))
     return(numpubs)
+
+
+def mk_random_graph(G_init,verbose=False,maxiter=5):
+    edgelist=numpy.random.randint(len(G_init.nodes),
+                                  size=(len(G_init.edges),2))
+    good_list=False
+    iter=0
+    while not good_list:
+        if iter>maxiter:
+            print('hit maxiter')
+            return None
+        if verbose:
+            print(len(edgelist))
+        edgelist=edgelist[edgelist[:,0]!=edgelist[:,1]]
+        if verbose:
+            print('self-edge removal',len(edgelist))
+        edgelist=numpy.sort(edgelist,axis=1)
+        edgelist=numpy.unique(edgelist,axis=0)
+        if verbose:
+            print('duplicate removal',len(edgelist))
+        if len(edgelist)==len(G_init.edges):
+            good_list=True
+        else:
+            iter+=1
+            edgelist=numpy.vstack((edgelist,
+                        numpy.random.randint(len(G_init.nodes),
+                                size=(len(G_init.edges)-len(edgelist),2)) ))
+    G_rand=nx.Graph()
+    for i in range(edgelist.shape[0]):
+        G_rand.add_edge(edgelist[i,0],edgelist[i,1])
+
+    return(G_rand)
