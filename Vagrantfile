@@ -67,8 +67,13 @@ conda install --yes python=3.6
 
 conda install --yes pip \
 numpy \
-scipy \
-networkx
+scipy
+
+# install latest networkx
+git clone https://github.com/networkx/networkx.git
+cd networkx
+pip install -e .
+
 
 conda install --yes -c conda-forge scikit-image
 
@@ -85,6 +90,8 @@ pip install biopython
 pip install python-igraph
 pip install nibabel nilearn
 pip install nipy
+pip install xlrd
+
 pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
 conda install --yes -c conda-forge dipy
 conda install --yes vtk
@@ -142,6 +149,12 @@ then
   mkdir $HOME/data
 fi
 
+# get connectome workbench
+if [ ! -d $HOME/workbench ]
+then
+  wget https://ftp.humanconnectome.org/workbench/workbench-linux64-v1.3.2.zip
+  unzip workbench-linux64-v1.3.2.zip
+fi
 
 
 if [ ! -d $HOME/tetrad ]
