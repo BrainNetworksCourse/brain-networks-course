@@ -117,6 +117,14 @@ then
   rm -rf matlab_installer mcr_options.txt
 fi
 
+if [ ! -d $HOME/bctpy ]
+then
+  git clone https://github.com/aestrivex/bctpy.git
+  cd bctpy
+  python setup.py install
+  cd
+fi
+
 if [ ! -d $HOME/spm12 ]
 then
   echo "downloading SPM..."
@@ -125,6 +133,7 @@ then
   echo 'alias spm="$HOME/spm12/run_spm12.sh $HOME/mcr/v85/"' >> .bashrc
   echo 'alias spm="$HOME/spm12/run_spm12.sh $HOME/mcr/v85/"' >> .env
   rm -rf spm12.zip
+  cd
 fi
 
 sudo sh -c 'echo "[SeatDefaults]
