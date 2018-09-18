@@ -10,7 +10,8 @@ To use the VM, first set up the following software on your computer:
 - Install [VirtualBox](https://www.virtualbox.org/)
 
 - Install [Vagrant](https://www.vagrantup.com/)
-
+    - Windows users will likely need to [turn off Hyper-V](https://ugetfix.com/ask/how-to-disable-hyper-v-in-windows-10/)
+    
 - Install [git](https://git-scm.com/) if you don't already have it.
 
 ### Creating your own fork of the class repository.
