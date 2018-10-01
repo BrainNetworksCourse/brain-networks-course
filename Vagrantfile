@@ -8,42 +8,56 @@ include MyVars
 
 $script = <<SCRIPT
 
-if [ ! -d $HOME/miniconda3 ]
+
+
+if [ ! -d $HOME/anaconda3 ]
 then
  # install anaconda
-# wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
- chmod +x miniconda.sh
- ./miniconda.sh -b
- echo "export PATH=$HOME/miniconda3/bin:\\$PATH" >> .bashrc
- echo "source activate $HOME/miniconda3/envs/py3" >> .bashrc
- echo "export PATH=$HOME/miniconda3/bin:\\$PATH" >> .env
- $HOME/miniconda3/bin/conda create -n py3 python=3.6
+wget https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh -O anaconda.sh
+ chmod +x anaconda.sh
+ ./anaconda.sh -b
+ echo "export PATH=$HOME/anaconda3/bin:\\$PATH" >> .bashrc
+ echo "source activate $HOME/anaconda3/envs/py3" >> .bashrc
+ echo "export PATH=$HOME/anaonda3/bin:\\$PATH" >> .env
+ $HOME/anaconda3/bin/conda create -n py3 python=3.6 anaconda
 fi
 
-source $HOME/miniconda3/bin/activate $HOME/miniconda3/envs/py3
-
-wget -O- http://neuro.debian.net/lists/trusty.us-nh.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
-sudo apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
-
-echo 'deb http://cran.cnr.Berkeley.edu/bin/linux/ubuntu trusty/' > /tmp/cran.sources.list
-sudo cp /tmp/cran.sources.list /etc/apt/sources.list.d/
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-
-sudo rm -rf /var/lib/apt/lists /var/cache/apt/archives
+source $HOME/anaconda3/bin/activate $HOME/anaconda3/envs/py3
 
 sudo add-apt-repository -y ppa:webupd8team/atom # install Atom
 
 sudo apt-get update -y
-#sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade -y
 
 # workaround http://forums.debian.net/viewtopic.php?f=10&t=101659
 sudo /usr/share/debconf/fix_db.pl
 sudo apt-get install -y dictionaries-common
 sudo /usr/share/debconf/fix_db.pl
 
+sudo apt-get install -y --force-yes build-essential
+sudo apt-get install -y --force-yes  python3-dev libxml2-dev libxslt1-dev zlib1g-dev
+sudo apt-get install -y --force-yes git
+
+
+conda install --yes -c anaconda biopython
+conda install --yes -c conda-forge python-igraph
+conda install --yes -c conda-forge nibabel
+conda install --yes -c conda-forge nilearn
+conda install --yes -c conda-forge nipy
+conda install --yes -c conda-forge xlrd
+
+pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
+conda install --yes -c conda-forge dipy
+conda install --yes vtk
+
+
+pip install python-louvain
+pip install SimpleITK
+
+wget -O- http://neuro.debian.net/lists/trusty.us-nh.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
+sudo apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9
+sudo apt-get update -y
+
 sudo apt-get install -y --force-yes r-base \
-git \
 fsl-core \
 fsl-atlases \
 lxde \
@@ -54,52 +68,10 @@ tar \
 unzip \
 default-jre \
 eog \
-geany
-
-sudo apt-get install -y --force-yes  python3-dev libxml2-dev libxslt1-dev zlib1g-dev
+geany \
+zip
 
 sudo apt-get install -y atom
-
-
-# install nipype dependencies
-conda update --yes -n base conda
-conda install --yes python=3.6
-
-conda install --yes pip \
-numpy \
-scipy
-
-# install latest networkx
-git clone https://github.com/networkx/networkx.git
-cd networkx
-pip install -e .
-
-
-conda install --yes -c conda-forge scikit-image
-
-conda install --yes -c conda-forge jupyter jupyterlab
-
-pip install Cython
-conda install --yes matplotlib \
-statsmodels \
-pandas \
-scikit-learn \
-seaborn
-
-pip install biopython
-pip install python-igraph
-pip install nibabel nilearn
-pip install nipy
-pip install xlrd
-
-pip install --upgrade https://github.com/nipy/nipype/archive/master.zip
-conda install --yes -c conda-forge dipy
-conda install --yes vtk
-
-
-pip install python-louvain
-pip install SimpleITK
-
 
 if [ ! -d $HOME/mcr ]
 then
@@ -177,11 +149,13 @@ fi
 if [ ! -d $HOME/brain-networks-course ]
 then
 	git clone https://github.com/#{GITHUB_USERNAME}/brain-networks-course
+  cd brain-networks-course
+  git remote add upstream https://github.com/BrainNetworksCourse/brain-networks-course.git
+  cd
 fi
 
 # add wxpython dependencies for FSLeyes
 sudo apt-get install -y --force-yes freeglut3 libsdl1.2debian
-sudo apt-get install -y --force-yes build-essential
 sudo apt-get install -y --force-yes libgtk2.0-dev libgtk-3-dev libwebkitgtk-dev libwebkitgtk-3.0-dev
 sudo apt-get install -y --force-yes libjpeg-turbo8-dev libtiff5-dev libsdl1.2-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev
 
@@ -198,7 +172,11 @@ sudo apt-get autoremove -y
 
 sudo VBoxClient --display -d
 sudo VBoxClient --clipboard -d
+sudo VBoxClient --draganddrop -d
+sudo VBoxClient --checkhostversion -d
+sudo VBoxClient --seamless -d
 
+sudo sed -i 's/allowed_users=.*$/allowed_users=anybody/' /etc/X11/Xwrapper.config
 
 SCRIPT
 
@@ -207,8 +185,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_x11 = true
 
   config.vm.box = "ubuntu/trusty64"
+  config.vm.box_version = "20180814.0.0"
 
-   config.vm.provider :virtualbox do |vb|
+  config.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--ioapic", "on"]
       vb.customize ["modifyvm", :id, "--memory", "5120"]
       vb.customize ["modifyvm", :id, "--cpus", "2"]
@@ -220,12 +199,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.gui = true
       vb.name = "brain-networks-course"
 
-      if Vagrant.has_plugin?("vagrant-cachier")
-        # Configure cached packages to be shared between instances of the same base box.
-        # More info on the "Usage" link above
-        config.cache.scope = :box
-
-      end
   end
     # uncomment following line to allow syncing to local machine
     config.vm.synced_folder ".", "/vagrant"
