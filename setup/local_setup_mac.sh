@@ -24,6 +24,7 @@ conda install --yes -c conda-forge dipy
 conda install --yes vtk
 
 pip install SimpleITK
+pip install --upgrade brainnetworks
 
 cd $BASEDIR
 git clone https://github.com/aestrivex/bctpy.git
